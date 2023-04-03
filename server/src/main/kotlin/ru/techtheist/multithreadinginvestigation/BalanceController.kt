@@ -1,6 +1,5 @@
 package ru.techtheist.multithreadinginvestigation
 
-import jakarta.annotation.PostConstruct
 import org.slf4j.LoggerFactory.getLogger
 import org.springframework.http.ResponseEntity
 import org.springframework.scheduling.annotation.EnableScheduling

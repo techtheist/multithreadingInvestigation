@@ -1,8 +1,6 @@
 package ru.techtheist.multithreadinginvestigation
 
 import org.slf4j.LoggerFactory
-import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 
 data class RequestStatistics(
