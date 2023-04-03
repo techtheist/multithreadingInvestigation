@@ -15,7 +15,7 @@ interface BalanceService {
      *  change balance on bank account
      *
      *  @param id of bank account
-     *  @param value amount to add in bank account
+     *  @param amount to add in bank account
      */
     fun changeBalance(id: Long, amount: Long)
 }

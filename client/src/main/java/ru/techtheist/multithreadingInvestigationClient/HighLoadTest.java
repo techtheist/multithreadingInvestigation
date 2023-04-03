@@ -24,8 +24,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 @EnableScheduling
 public class HighLoadTest {
 
-    private static AtomicInteger getCount = new AtomicInteger(0);
-    private static AtomicInteger setCount = new AtomicInteger(0);
+    private static final AtomicInteger getCount = new AtomicInteger(0);
+    private static final AtomicInteger setCount = new AtomicInteger(0);
 
     @Value("${app.requests.uri}")
     private String uri = "http://server:8080/api/balance/";

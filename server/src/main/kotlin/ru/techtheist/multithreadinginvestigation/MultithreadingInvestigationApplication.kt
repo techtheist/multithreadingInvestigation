@@ -1,6 +1,5 @@
 package ru.techtheist.multithreadinginvestigation
 
-import jakarta.annotation.PostConstruct
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 @SpringBootApplication
