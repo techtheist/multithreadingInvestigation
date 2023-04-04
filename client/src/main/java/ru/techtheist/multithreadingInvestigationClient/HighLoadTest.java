@@ -27,8 +27,11 @@ public class HighLoadTest {
     private static final AtomicInteger getCount = new AtomicInteger(0);
     private static final AtomicInteger setCount = new AtomicInteger(0);
 
+    @Value("${app.requests.server}")
+    private String server;
+
     @Value("${app.requests.uri}")
-    private String uri = "http://server:8080/api/balance/";
+    private String uri;
 
     @Value("${app.requests.accountsTotal}")
     private int accountsTotal;
@@ -52,7 +55,7 @@ public class HighLoadTest {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(concurrency);
         executor.setMaxPoolSize(concurrency);
-        executor.setQueueCapacity(100);
+        executor.setQueueCapacity(1000);
         executor.initialize();
         return executor;
     }
@@ -68,26 +71,26 @@ public class HighLoadTest {
 
                 if (ThreadLocalRandom.current().nextDouble() < readProbability) {
 
-                    String accountUri = uri + (Math.abs(ThreadLocalRandom.current().nextInt(accountsTotal)) + 1);
+                    String accountUri = server + uri + (Math.abs(ThreadLocalRandom.current().nextInt(accountsTotal)) + 1);
                     ResponseEntity<String> responseEntity = restTemplate.exchange(accountUri, HttpMethod.GET, null, String.class);
 
                     getCount.getAndIncrement();
-                    logger.debug("GET Request sended to " + accountUri + " with code: " + responseEntity.getStatusCode().value());
+                    logger.debug("GET Request sent to " + accountUri + " with code: " + responseEntity.getStatusCode().value());
                 } else {
                     String requestBody = "{\"amount\": 1}";
                     HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
 
-                    String accountUri = uri + (Math.abs(ThreadLocalRandom.current().nextInt(accountsTotal)) + 1);
+                    String accountUri = server + uri + (Math.abs(ThreadLocalRandom.current().nextInt(accountsTotal)) + 1);
                     ResponseEntity<String> responseEntity = restTemplate.exchange(accountUri, HttpMethod.POST, requestEntity, String.class);
 
                     setCount.getAndIncrement();
-                    logger.debug("POST Request sended to " + accountUri + " with code: " + responseEntity.getStatusCode().value());
+                    logger.debug("POST Request sent to " + accountUri + " with code: " + responseEntity.getStatusCode().value());
                 }
             }
         });
     }
 
-    @Scheduled(fixedDelay = 10000L)
+    @Scheduled(fixedDelay = 5000)
     public void logStats() {
         logger.info("Total requests send: " + (getCount.get() + setCount.get()) + ", ratio: " +
                 Math.floor(((double) getCount.get() / (double) setCount.get()) * 100) / 100);

@@ -35,8 +35,11 @@ class DefaultBalanceService(private val accountService: AccountService) : Balanc
         runBlocking {
             withContext(Dispatchers.IO) {
                 readWriteLock.writeLock().lock()
-                accountService.changeBalance(id, amount)
-                readWriteLock.writeLock().unlock()
+                try {
+                    accountService.changeBalance(id, amount)
+                } finally {
+                    readWriteLock.writeLock().unlock()
+                }
             }
         }
     }
